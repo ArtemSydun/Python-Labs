@@ -1,30 +1,27 @@
-
-
-import numpy as np
-print("Method of Gauss")
-a = np.matrix([ [1,1,-1], [3, -1, 2], [4, 4, -3] ])
-b = np.matrix([[-2], [9], [-5]])
-print ("Matrix A = ", a)
-print ("\nMatrix b = ", b)
-
-def fun():    
-    k = 1
-    n = len(b)
-    while k<=n-1:
-        i = k+1
-        while i<n:
-            if a[i,k]!=0.0:
-                a[i,k+1:n] = a[i,k+1:n] - (a[i,k]/a[k,k])*a[k,k+1:n]
-                b[i] = b[i] - (a[i,k]/a[k,k])*b[k]
-            i += 1
-        k += 1
-    k = n-1
-    while k > -1:
-        b[k] = (b[k] - np.dot(a[k,k+1:n], b[k+1:n]))/a[k,k]
-        k-=1
-    return b
-print ("\nGauss: ", fun())
-    
-print("\nCheck of solution of Method of Gauss: ", np.linalg.solve(a,b))
-
-print("\nGauss-Jordan Method", np.linalg.inv(a)*b)
+import math
+from scipy import optimize
+x0 = 3.4
+y0 = 1.3
+def f1(x):
+    return 0.5 - math.cos(x-1)
+def f2(y): 
+    return 3 + math.cos(y)
+def iter (x, y, e):
+    xn = x
+    yn = y
+    xn1 = f2(x)
+    yn1 = f1(y)
+    n = 1
+    while ((abs(xn1 - xn) >= e) & (abs(yn1 - yn) >= e)):
+        xn = xn1
+        yn = yn1
+        xn1 = f2(yn)
+        yn1 = f1(xn1)
+        n += 1 
+    print ('Simple iteration:')
+    print ('x1=', xn, '\ny1=', yn, '\nnumber of iteration = ', n)
+iter (x0, y0, 0.0001)
+def f(x):
+    return math.cos(x[0]-1) + x[1] - 0.5, x[0] - math.cos(x[1])-3
+s = optimize.root (f, [0,0], method = 'hybr')
+print (s.x)
