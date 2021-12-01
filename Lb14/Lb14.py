@@ -1,0 +1,59 @@
+
+from scipy.interpolate import interp1d
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import quad
+from math import *
+def ejler(x, y):
+    return x + sin(y/sqrt(0.7))
+def ejler_Koshi(x, y):
+    return x + sin(y/sqrt(11))
+def Ejler(ejler, x, y):
+    h = 0.2
+    x = 1.2
+    y = 1.4
+    xmas = ([])
+    ymas = ([])
+    for i in range (0, 6):
+      x += h
+      xmas.append([x])
+      y += h* ejler(x, y)
+      ymas.append([y])
+    plt.subplot(221)
+    plt.title('Ejler')
+    plt.plot(xmas, ymas)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid()
+    plt.show()
+    print("x by Ejler",xmas,"\ny by Ejler\n",ymas)
+def EjlerKoshi(euler_coshi, x, y):
+    h = 0.2
+    x = 0.6
+    y = 1.2
+    xmas = ([])
+    ymas = ([])
+    for i in range (0, 6):
+        x += h
+        xmas.append([x])
+       
+        y += h/2 * (ejler_Koshi(x, y) + ejler_Koshi(x+h, ejler_Koshi(x, y)))
+        ymas.append([y])
+    plt.subplot(222)
+    plt.title('Koshi')
+    plt.plot(xmas, ymas)
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.grid()
+    plt.show()
+    print("x by EjlerKoshi",xmas,"\ny by EjlerKoshi\n",ymas)
+print(Ejler(ejler, 1.2, 2.2))
+print(EjlerKoshi(ejler_Koshi, 0.6, 1.6))
+
+
+
+
+
+
+
+  
